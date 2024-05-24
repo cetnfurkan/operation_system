@@ -27,17 +27,20 @@ const DraggableIcon: React.FC<DraggableIconProps> = ({
   };
 
   const onDoubleClick = () => {
-    dispatch(addWindow({ 
-      id: uuidv4(),
-      title: label,
-      zIndex: 1,
-      isActive: false,
-      x: position.x,
-      y: position.y,
-      width: 400,
-      height: 300,
-      isFullScreen: false,
-     }));
+    dispatch(
+      addWindow({
+        id: uuidv4(),
+        title: label,
+        zIndex: 1,
+        isActive: true,
+        x: position.x,
+        y: position.y,
+        width: 400,
+        height: 300,
+        isFullScreen: false,
+        isHidden: false,
+      })
+    );
   };
 
   return (

@@ -10,7 +10,8 @@ export interface WindowState {
   height: number;
   zIndex: number;
   isActive: boolean;
-  isFullScreen?: boolean;
+  isFullScreen: boolean;
+  isHidden: boolean;
 }
 
 interface WindowSliceState {
@@ -56,6 +57,13 @@ const windowSlice = createSlice({
           : window
       );
     },
+    setHideWindow: (state, action: PayloadAction<{id: string; hidden: boolean, isActive?: boolean}>) => {
+      state.windows = state.windows.map((window) =>
+        window.id === action.payload.id
+          ? { ...window, isHidden: action.payload.hidden, isActive: action.payload.isActive || false}
+          : {...window, isActive: false, zIndex: 0}
+      );
+    },
     setWindowPosition: (state, action: PayloadAction<{ id: string; x: number; y: number; width?: number; height?: number }>) => {
       state.windows = state.windows.map((window) =>
         window.id === action.payload.id
@@ -66,5 +74,5 @@ const windowSlice = createSlice({
   },
 });
 
-export const { addWindow, removeWindow, setActiveWindow, setFullScreen, setWindowPosition } = windowSlice.actions;
+export const { addWindow, removeWindow, setActiveWindow, setFullScreen, setWindowPosition, setHideWindow } = windowSlice.actions;
 export default windowSlice.reducer;

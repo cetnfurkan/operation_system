@@ -1,9 +1,21 @@
+'use client';
 import React from 'react';
 import Image from 'next/image';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
+import { setHideWindow } from '@/redux/slices/window';
 
 export default function Dock() {
+  const windows = useSelector((state: RootState) => state.window.windows);
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleShowWindow = (id: string) => {
+    dispatch(setHideWindow({ id, hidden: false, isActive: true }));
+  };
+
   return (
-    <section className="h-[46px] w-full flex items-center gap-[5px]">
+    <section className="h-[60px] w-full flex items-center gap-[5px]">
       <div className="bg-half-black min-h-full p-[2px] rounded-[14px] flex items-center gap-[4px]">
         <div className="bg-half-black p-[4px] rounded-[14px] cursor-pointer hover:bg-near-black mr-[22px]">
           <Image
@@ -22,17 +34,24 @@ export default function Dock() {
         </div>
       </div>
       <div className="bg-half-black min-h-full p-[2px] rounded-[14px] flex items-center justify-center gap-[4px] flex-1">
-        {Array.from({ length: 5 }).map((_, index) => (
+        {windows.map((window, index) => (
           <div
+            onClick={() => handleShowWindow(window.id)}
             key={index}
-            className="bg-half-black p-[4px] rounded-[14px] cursor-pointer hover:bg-near-black"
+            className="relative pb-2"
           >
-            <Image
-              width={32}
-              height={32}
-              src="icons/start-menu.svg"
-              alt="start-menu"
-            />
+            <div className="bg-half-black p-[4px] rounded-[14px] cursor-pointer hover:bg-near-black">
+              <Image
+                width={32}
+                height={32}
+                src="icons/start-menu.svg"
+                alt="start-menu"
+              />
+            </div>
+
+            {window.isActive && !window.isHidden && (
+              <span className="w-1 h-1 bg-gray-100 hover:bg-gray-200 rounded-full absolute left-2/4 bottom-0 transform -translate-x-2/4" />
+            )}
           </div>
         ))}
       </div>

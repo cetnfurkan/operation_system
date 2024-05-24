@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import React from 'react';
 import DraggableIcon from '@/Components/Draggable';
 import { RootState } from '@/redux/store';
@@ -36,16 +36,12 @@ export default function Desktop() {
           defaultPosition={icon.defaultPosition}
         />
       ))}
-        {/* Open windows section */}
-        {windows.map((window, index) => (
-            <Window 
-                key={index}
-                id={window.id}
-                title={window.title}
-            >
-                <div/>
-            </Window>
-        ))}
+      {/* Open windows section */}
+      {windows.map((window, index) => (
+        <Window key={index} id={window.id} title={window.title}>
+          <div />
+        </Window>
+      ))}
     </section>
   );
 }

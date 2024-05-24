@@ -3,10 +3,12 @@ import {
   removeWindow,
   setActiveWindow,
   setFullScreen,
+  setHideWindow,
   setWindowPosition,
 } from '@/redux/slices/window';
 import { AppDispatch } from '@/redux/store';
 import { RootState } from '@/redux/store';
+import { clsx } from 'clsx';
 import React, { useMemo } from 'react';
 import { DraggableEventHandler } from 'react-draggable';
 import { useDispatch, useSelector } from 'react-redux';
@@ -59,7 +61,7 @@ const Window: React.FC<WindowProps> = ({ id, title, children }) => {
   };
 
   const minimizeWindow = () => {
-    dispatch(setActiveWindow(id));
+    dispatch(setHideWindow({ id, hidden: true, isActive: false }));
   };
 
   const fullScreenWindow = () => {
@@ -68,12 +70,19 @@ const Window: React.FC<WindowProps> = ({ id, title, children }) => {
 
   return (
     <Rnd
-      position={{ x: activeWindow!.x, y: activeWindow!.y }}
+      position={{
+        x: activeWindow?.isFullScreen ? 0 : activeWindow!.x,
+        y: activeWindow?.isFullScreen ? 0 : activeWindow!.y,
+      }}
       onDragStop={handleDragStop}
       onResize={handleResizeStop}
       size={{
-        width: activeWindow?.isFullScreen ? window.innerWidth : activeWindow!.width,
-        height: activeWindow?.isFullScreen ? window.innerHeight : activeWindow!.height,
+        width: activeWindow?.isFullScreen
+          ? window.innerWidth - 20
+          : activeWindow!.width,
+        height: activeWindow?.isFullScreen
+          ? window.innerHeight - 20
+          : activeWindow!.height,
       }}
       default={{
         x: 100,
@@ -91,9 +100,10 @@ const Window: React.FC<WindowProps> = ({ id, title, children }) => {
       dragHandleClassName="cursor-move"
       onClick={bringToFront}
       style={{ zIndex: activeWindow?.zIndex || 0 }}
-      className={`${
-        activeWindow?.isActive ? 'shadow-2xl' : 'shadow-md'
-      } absolute`}
+      className={clsx(
+        activeWindow?.isActive ? 'shadow-2xl' : 'shadow-md',
+        activeWindow.isHidden ? '!hidden' : 'absolute'
+      )}
     >
       <div className="bg-white rounded-lg border border-gray-300 overflow-hidden h-full">
         <div className="flex items-center justify-between bg-gray-200 p-2">
