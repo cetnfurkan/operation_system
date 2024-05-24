@@ -19,8 +19,8 @@ export default function Dock() {
       <div className="bg-half-black min-h-full p-[2px] rounded-[14px] flex items-center gap-[4px]">
         <div className="bg-half-black p-[4px] rounded-[14px] cursor-pointer hover:bg-near-black mr-[22px]">
           <Image
-            width={34}
-            height={34}
+            width={40}
+            height={40}
             src="icons/start-menu.svg"
             alt="start-menu"
           />
@@ -78,7 +78,7 @@ export default function Dock() {
         ].map((icon, index) => (
           <div
             key={index}
-            className="bg-half-black p-[4px] rounded-[14px] cursor-pointer hover:bg-near-black w-[42px] h-[42px] flex items-center justify-center"
+            className="bg-half-black p-[4px] rounded-[14px] cursor-pointer hover:bg-near-black w-[48px] h-[48px] flex items-center justify-center"
           >
             <Image
               width={icon.width}
